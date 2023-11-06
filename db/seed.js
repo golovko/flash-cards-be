@@ -19,7 +19,7 @@ async function seedDB() {
   try {
     await client.connect();
     console.log('Connected correctly to server');
-    const collection = client.db('flash-cards-test').collection('cards');
+    const collection = client.db(process.env.MONGO_DB).collection('cards');
     collection.drop();
     collection
       .insertMany(biologyCards)
