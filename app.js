@@ -1,29 +1,27 @@
-const express = require("express");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
 const app = express();
-const Card = require("./models/Card");
-
-const db_connect = require("./db/connect");
-const ObjectId = require("mongodb").ObjectId;
+const { db } = require('./db/connect');
+const ObjectId = require('mongodb').ObjectId;
+const collection = db.collection('cards');
 
 app.use(cors());
 app.use(express.json());
-db_connect();
 
-app.get("/api/cards", async function (req, res) {
+app.get('/api/cards', async function (req, res) {
   try {
-    const fetchedCards = await Card.find({});
+    const fetchedCards = await collection.find({}).toArray();
     res.status(200).send(fetchedCards);
   } catch (err) {
     console.log(err);
   }
 });
 
-app.get("/api/cards/:card_id", async function (req, res) {
-  let id = req.params.card_id;
-  console.log(id);
+app.get('/api/cards/:card_id', async function (req, res) {
   try {
-    const fetchedCard = await Card.find({ _id: id });
+    const objectId = new ObjectId(req.params.card_id);
+    const fetchedCard = await collection.findOne({ _id: objectId });
+    console.log(fetchedCard);
     res.status(200).send(fetchedCard);
   } catch (err) {
     console.log(err);

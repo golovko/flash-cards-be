@@ -1,35 +1,27 @@
-const { biologyCards } = require("./data/cards-mock");
-const MongoClient = require("mongodb").MongoClient;
-let uri;
-const ENV = process.env.NODE_ENV || "development";
-
-require("dotenv").config({
-  path: `${__dirname}/../.env.${ENV}`,
-});
-
-if (!process.env.MONGO_URI || !process.env.MONGO_DB) {
-  throw new Error("MONGO_URI or MONGO_DB not set");
-}
-
-uri = process.env.MONGO_URI;
+const { biologyCards } = require('./data/cards-mock');
+const { db, client } = require('../db/connect');
+const collection = db.collection('cards');
 
 async function seedDB() {
-  const client = await new MongoClient(uri);
-
   try {
-    await client.connect();
-    console.log("Connected correctly to server");
-    const collection = await client
-      .db(process.env.MONGO_DB)
-      .collection("cards");
-    await collection.drop();
-    await collection.insertMany(biologyCards);
-    await client.close();
+    console.log('Connected correctly to server');
+    //collection.drop();
+    db.runCommand({
+      drop: 'cards',
+      writeConcern: '',
+      comment: '',
+    });
+
+    const result = await collection.insertMany(biologyCards);
+    console.log(result.insertedIds);
   } catch (err) {
     console.log(err.stack);
+  } finally {
+    console.log('connection closed');
   }
 }
 
 seedDB();
+client.close();
 
 module.exports = seedDB;
