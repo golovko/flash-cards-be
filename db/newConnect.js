@@ -18,7 +18,7 @@ async function connect() {
   if (!client) {
     client = new MongoClient(mongoURI);
     await client.connect();
-  }
+  } else return client;
 }
 
 function getCollection(collectionName) {

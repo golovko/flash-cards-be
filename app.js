@@ -3,22 +3,12 @@ const cors = require('cors');
 const app = express();
 const db = require('./db/newConnect');
 const ObjectId = require('mongodb').ObjectId;
+const { cardsGet } = require('./controllers/cards.controller');
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/cards', async function (req, res) {
-  try {
-    await db.connect();
-    const collection = db.getCollection('cards');
-    const fetchedCards = await collection.find({}).toArray();
-    res.status(200).send(fetchedCards);
-  } catch (err) {
-    console.log(err);
-  } finally {
-    await db.close();
-  }
-});
+app.get('/api/cards', cardsGet);
 
 app.get('/api/cards/:card_id', async function (req, res) {
   try {
@@ -31,7 +21,6 @@ app.get('/api/cards/:card_id', async function (req, res) {
   } catch (err) {
     console.log(err);
   } finally {
-    await db.close();
   }
 });
 

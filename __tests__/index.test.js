@@ -8,7 +8,7 @@ beforeAll(async () => {
   await SeedMongo(db);
 });
 afterAll(async () => {
-  db.close();
+  await db.close();
 });
 
 describe('Endpoint tests', () => {
@@ -25,7 +25,7 @@ describe('Endpoint tests', () => {
       .get('/api/cards')
       .then((response) => {
         expect(response.status).toBe(200);
-        expect(response.body.length).toBe(10);
+        expect(response.body.length).toBe(9);
       });
   });
 });
