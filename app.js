@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 const db = require('./db/newConnect');
 const ObjectId = require('mongodb').ObjectId;
-const { cardsGet } = require('./controllers/cards.controller');
+const { cardsGet, postCard} = require('./controllers/cards.controller');
 
 app.use(cors());
 app.use(express.json());
@@ -23,5 +23,7 @@ app.get('/api/cards/:card_id', async function (req, res) {
   } finally {
   }
 });
+
+app.post('/api/cards', postCard);
 
 module.exports = app;
