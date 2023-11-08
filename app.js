@@ -30,4 +30,17 @@ app.get('/api/cards/:card_id', async function (req, res) {
   }
 });
 
+app.post('/api/cards', async function (req,res) {
+  const card = new Card({
+    question: req.body.question,
+    answer: req.body.answer,
+    topic: req.body.topic
+  })
+  try{
+    const insertCard = await card.save()
+    res.status(201).send(insertCard)
+  } catch(err){
+    console.log(err)
+  }
+})
 module.exports = app;
