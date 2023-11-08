@@ -4,6 +4,7 @@ const app = express();
 const db = require('./db/newConnect');
 const ObjectId = require('mongodb').ObjectId;
 const { cardsGet } = require('./controllers/cards.controller');
+const { usersGet, usersPost } = require('./controllers/users.controller');
 
 app.use(cors());
 app.use(express.json());
@@ -19,9 +20,12 @@ app.get('/api/cards/:card_id', async function (req, res) {
     console.log(fetchedCard);
     res.status(200).send(fetchedCard);
   } catch (err) {
-    console.log(err);
+    
   } finally {
   }
 });
 
+
+app.get('/api/users', usersGet)
+app.post('/api/users', usersPost)
 module.exports = app;
