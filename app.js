@@ -3,6 +3,8 @@ const cors = require('cors');
 const app = express();
 const db = require('./db/newConnect');
 const ObjectId = require('mongodb').ObjectId;
+
+const { usersGet, usersPost } = require('./controllers/users.controller');
 const { cardsGet, postCard} = require('./controllers/cards.controller');
 
 app.use(cors());
@@ -19,11 +21,13 @@ app.get('/api/cards/:card_id', async function (req, res) {
     console.log(fetchedCard);
     res.status(200).send(fetchedCard);
   } catch (err) {
-    console.log(err);
+    
   } finally {
   }
 });
 
+app.get('/api/users', usersGet)
+app.post('/api/users', usersPost)
 app.post('/api/cards', postCard);
 
 module.exports = app;

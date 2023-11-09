@@ -7,7 +7,7 @@ module.exports.cardsFetch = async () => {
     const fetchedCards = await collection.find({}).toArray();
     return fetchedCards;
   } catch (err) {
-    console.log(err);
+    
   } finally {
     db.close();
   }
