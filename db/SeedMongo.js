@@ -5,23 +5,6 @@ const db = require('./newConnect');
 const { users } = require('./data/users-mock'); // Import the users data
 
 
-async function SeedUsers(dbm) {
-  try {
-    const collection = dbm.getCollection('users');
-    let res = await collection.drop();
-    console.log('users collection dropped' + res);
-    const result = await collection.insertMany(users);
-    console.log(result.insertedIds);
-  } catch (error) {
-    console.error('Error seeding users:', error);
-  }
-}
-
-async function seedUsersScript() {
-  await db.connect();
-  await SeedUsers(db);
-  await db.close();
-}
 
 
 async function SeedMongo(dbm) {
@@ -43,3 +26,89 @@ seedScript();
 seedUsersScript();
 
 module.exports = SeedMongo;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+async function SeedUsers(dbm) {
+  try {
+    const collection = dbm.getCollection('users');
+    let res = await collection.drop();
+    console.log('users collection dropped' + res);
+    const result = await collection.insertMany(users);
+    console.log(result.insertedIds);
+  } catch (error) {
+    console.error('Error seeding users:', error);
+  }
+}
+
+async function seedUsersScript() {
+  await db.connect();
+  await SeedUsers(db);
+  await db.close();
+}

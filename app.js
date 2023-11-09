@@ -26,6 +26,31 @@ app.get('/api/cards/:card_id', async function (req, res) {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.get('/api/users', usersGet)
 app.post('/api/users', usersPost)
 module.exports = app;
