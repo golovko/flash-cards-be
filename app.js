@@ -3,8 +3,9 @@ const cors = require('cors');
 const app = express();
 const db = require('./db/newConnect');
 const ObjectId = require('mongodb').ObjectId;
-const { cardsGet } = require('./controllers/cards.controller');
+
 const { usersGet, usersPost } = require('./controllers/users.controller');
+const { cardsGet, postCard} = require('./controllers/cards.controller');
 
 app.use(cors());
 app.use(express.json());
@@ -25,32 +26,8 @@ app.get('/api/cards/:card_id', async function (req, res) {
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.get('/api/users', usersGet)
 app.post('/api/users', usersPost)
+app.post('/api/cards', postCard);
+
 module.exports = app;
