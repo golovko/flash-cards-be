@@ -3,6 +3,8 @@ const db = require('../db/newConnect');
 const request = require('supertest');
 const SeedMongo = require('../db/SeedMongo.js');
 
+const { expect } = require('@jest/globals');
+
 beforeAll(async () => {
   db.connect();
   await SeedMongo(db);
@@ -90,6 +92,21 @@ describe('Users tests', () => {
         email: 'newuser@test.com'
       })
     })
+  })
+  test('Check if a user is available on POST', async () => {
+    const testNonUniqueUser = {
+    "username": "CellBiologist",
+    "password": "password",
+    "email": "CellBiologist@test.com"
+    }
+    await request(app)
+    .post('/api/users')
+    .send(testNonUniqueUser)
+    .then((response) => {
+      expect(response.status).toBe(400)
+      expect(response.body.msg).toBe("Username is already taken!")
+    })
+
   })
 })
 

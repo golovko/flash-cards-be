@@ -1,4 +1,5 @@
 
+
 const { usersFetch, postUser } = require('../models/users.model');
 
 module.exports.usersGet = async (req, res, next) => {
@@ -10,8 +11,14 @@ module.exports.usersGet = async (req, res, next) => {
 
 module.exports.usersPost = async (req, res, next) => {
     try {
+        
+        
         const testUser = req.body
-       const postedUser =  await postUser(testUser)
+        const postedUser =  await postUser(testUser, req, res, next)
         await res.status(201).send({user: postedUser})
-    }catch {}
+        
+       
+    }catch (err) {
+      
+    }
 }
