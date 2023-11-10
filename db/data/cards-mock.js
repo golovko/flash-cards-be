@@ -100,7 +100,7 @@ exports.biologyCards = [
     question: 'What is the endocrine system?',
     answer:
       'The endocrine system is a collection of glands that produce hormones to regulate various bodily functions.',
-    topic: 'Biology',
+    topic: 'Math',
     deck: ['Human Anatomy'],
     tags: ['Endocrine System', 'Hormones'],
     createdAt: new Date(),
@@ -112,7 +112,7 @@ exports.biologyCards = [
     question: 'What is biodiversity and why is it important?',
     answer:
       'Biodiversity refers to the variety of life on Earth, and it is important for ecological stability and the well-being of ecosystems.',
-    topic: 'Biology',
+    topic: 'Math',
     deck: ['Ecology'],
     tags: ['Biodiversity', 'Conservation'],
     createdAt: new Date(),
