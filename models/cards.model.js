@@ -1,11 +1,13 @@
 const db = require('../db/newConnect');
 const { ObjectId } = require('mongodb');
 
-module.exports.fetchCards = async () => {
+module.exports.fetchCards = async (topic) => {
+  let query = {};
+  if (topic) query = { topic: topic };
   try {
     await db.connect();
     const collection = db.getCollection('cards');
-    const fetchedCards = await collection.find({}).toArray();
+    const fetchedCards = await collection.find(query).toArray();
     return fetchedCards;
   } catch (err) {
   } finally {
@@ -24,8 +26,8 @@ module.exports.insertCard = async (newCard) => {
       answer,
       topic,
     });
-    const cardId = new ObjectId(insertedCard.insertedId)
-    const postedCard = await collection.findOne({_id: cardId})
+    const cardId = new ObjectId(insertedCard.insertedId);
+    const postedCard = await collection.findOne({ _id: cardId });
     return postedCard;
   } catch (err) {
     throw err;

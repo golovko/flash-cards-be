@@ -27,6 +27,15 @@ describe('cards endpoints tests', () => {
         expect(response.body.length).toBe(10);
       });
   });
+  test('GET /api/cards?topic=Math should return a list of cards from the test database', async () => {
+    await request(app)
+      .get('/api/cards?topic=Math')
+      .then((response) => {
+        console.log(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(2);
+      });
+  });
 
   test('POST /api/cards should add a card to the database', async () => {
     const newItem = {
