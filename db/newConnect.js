@@ -16,11 +16,9 @@ let client = null;
 
 async function connect() {
   if (!client) {
-    client = new MongoClient(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    client = new MongoClient(mongoURI);
     await client.connect();
+    return client;
   } else return client;
 }
 
