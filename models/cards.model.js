@@ -24,11 +24,13 @@ module.exports.insertCard = async (newCard) => {
       answer,
       topic,
     });
-    return insertedCard;
+    const cardId = new ObjectId(insertedCard.insertedId)
+    const postedCard = await collection.findOne({_id: cardId})
+    return postedCard;
   } catch (err) {
     throw err;
   } finally {
-    await db.close();
+    db.close();
   }
 };
 

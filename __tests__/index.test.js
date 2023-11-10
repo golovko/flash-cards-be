@@ -39,8 +39,14 @@ describe('cards endpoints tests', () => {
       .post('/api/cards')
       .send(newItem)
       .then((response) => {
+        const postedCard = response.body;
         expect(response.statusCode).toBe(201);
-        expect(response.body.acknowledged).toBe(true);
+        expect(postedCard.card).toMatchObject({
+          _id: expect.any(String),
+          question: 'How many hairs are there?',
+          answer: '46',
+          topic: 'Biology',
+        });
       });
   });
 
@@ -104,6 +110,20 @@ describe('Users tests', () => {
           password: 'password',
           email: 'newuser@test.com',
         });
+      });
+  });
+  test('Check if a user is available on POST', async () => {
+    const testNonUniqueUser = {
+      username: 'CellBiologist',
+      password: 'password',
+      email: 'CellBiologist@test.com',
+    };
+    await request(app)
+      .post('/api/users')
+      .send(testNonUniqueUser)
+      .then((response) => {
+        expect(response.status).toBe(400);
+        expect(response.body.msg).toBe('Username is already taken!');
       });
   });
 });

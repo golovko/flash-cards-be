@@ -20,7 +20,7 @@ module.exports.postCard = async (req, res, next) => {
     }
 
     const insertedCard = await insertCard(newCard);
-    res.status(201).json(insertedCard);
+    res.status(201).send({ card: insertedCard });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: 'Error occurred when posting the car' });
