@@ -1,14 +1,13 @@
 const db = require('../db/newConnect');
 const { ObjectId } = require('mongodb');
 
-module.exports.cardsFetch = async () => {
+module.exports.fetchCards = async () => {
   try {
     await db.connect();
     const collection = db.getCollection('cards');
     const fetchedCards = await collection.find({}).toArray();
     return fetchedCards;
   } catch (err) {
-    
   } finally {
     db.close();
   }
@@ -50,3 +49,13 @@ finally{
   db.close()
 } 
 }
+module.exports.fetchCardById = async (card_id) => {
+  try {
+    await db.connect();
+    const collection = db.getCollection('cards');
+    const objectId = new ObjectId(card_id);
+    return await collection.findOne({ _id: objectId });
+  } catch (err) {
+    return err;
+  }
+};
