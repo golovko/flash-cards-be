@@ -22,7 +22,6 @@ describe('cards endpoints tests', () => {
     await request(app)
       .get('/api/cards')
       .then((response) => {
-        console.log(response.body);
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(10);
       });
@@ -71,12 +70,10 @@ describe('cards endpoints tests', () => {
       .get('/api/cards')
       .then((response) => {
         id = response.body[0]._id;
-        console.log(id);
       });
     await request(app)
       .get('/api/cards/' + id)
       .then((response) => {
-        console.log('response body ', response.body);
         expect(response.body._id).toBe(id);
       });
   });
@@ -129,22 +126,21 @@ describe('Users tests', () => {
 });
 
 describe("/api/cards/:card_id",  () => {
-it.only("DELETE: 204 deletes specific card and return no body", async () => {
+it("DELETE: 204 deletes specific card and return no body", async () => {
+  const card_id = "654e09bff3b05bcb57917c0c"
   await request(app)
-  .delete('/api/cards/654e09bff3b05bcb57917c0c')
+  .delete(`/api/cards/${card_id}`)
   .then((response)=> {
     expect(response.status).toBe(204)
     expect(response.body)
   })
 })
 
-it.only("DELETE: 400 status and sends an error message when given invalid id", async () => {
+it("DELETE: 400 status and sends an error message when given invalid id", async () => {
 await request(app)
 .delete('/api/cards/not-an-id')
 .then((response) => {
-  console.log(response)
   expect(response.status).toBe(400)
-  expect(response).not.toBeNull();
   expect(response.body.message).toBe('Invalid input')
 })
 })
@@ -154,7 +150,6 @@ describe('Topics tests', () => {
     await request(app)
       .get('/api/topics')
       .then((response) => {
-        console.log(response.body);
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(2);
       });
