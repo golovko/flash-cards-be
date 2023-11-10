@@ -1,13 +1,13 @@
-const db = require("./newConnect");
-const { biologyCards } = require("./data/cards-mock");
-const { topicsMock } = require("../db/data/topics-mock");
-const { users } = require("./data/users-mock");
+const db = require('./newConnect');
+const { biologyCards } = require('./data/cards-mock');
+const { topicsMock } = require('../db/data/topics-mock');
+const { users } = require('./data/users-mock');
 
 async function SeedMongo(dbm) {
   try {
-    const collection = dbm.getCollection("cards");
+    const collection = dbm.getCollection('cards');
     let res = await collection.drop();
-    console.log("collection dropped" + res);
+    console.log('collection dropped: ' + res);
     const result = await collection.insertMany(biologyCards);
     console.log(result.insertedIds);
   } catch (error) {}
@@ -22,13 +22,13 @@ seedScript();
 
 async function SeedUsers(dbm) {
   try {
-    const collection = dbm.getCollection("users");
+    const collection = dbm.getCollection('users');
     let res = await collection.drop();
-    console.log("users collection dropped" + res);
+    console.log('users collection dropped: ' + res);
     const result = await collection.insertMany(users);
     console.log(result.insertedIds);
   } catch (error) {
-    console.error("Error seeding users:", error);
+    console.error('Error seeding users: ', error);
   }
 }
 
@@ -40,13 +40,13 @@ async function seedUsersScript() {
 
 async function SeedTopics(dbm) {
   try {
-    const collection = dbm.getCollection("topics");
+    const collection = dbm.getCollection('topics');
     let res = await collection.drop();
-    console.log("topics collection dropped" + res);
+    console.log('topics collection dropped: ' + res);
     const result = await collection.insertMany(topicsMock);
     console.log(result.insertedIds);
   } catch (error) {
-    console.error("Error seeding topics:", error);
+    console.error('Error seeding topics: ', error);
   }
 }
 

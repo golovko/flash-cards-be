@@ -1,4 +1,4 @@
-const { fetchTopics } = require("../models/topics.model");
+const { fetchTopics, insertTopic } = require('../models/topics.model');
 
 module.exports.getTopics = async (req, res, next) => {
   try {
@@ -10,6 +10,6 @@ module.exports.getTopics = async (req, res, next) => {
 };
 
 module.exports.postTopic = async (req, res, next) => {
-  const newTopic = req.body;
-  console.log(newTopic, "topic");
+  const topic = await insertTopic(req.body);
+  res.status(201).send(topic);
 };
