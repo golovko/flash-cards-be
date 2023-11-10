@@ -1,4 +1,5 @@
-const { cardsFetch, insertCard} = require('../models/cards.model');
+const { cardsFetch, insertCard, removeCardById} = require('../models/cards.model');
+const { ObjectId } = require('mongodb');
 
 module.exports.cardsGet = async (req, res, next) => {
   try {
@@ -23,3 +24,13 @@ module.exports.postCard = async (req, res, next) => {
 }
 };
 
+module.exports.deleteCard = async (req, res, next) => {
+  try{
+    const card_id = new ObjectId(req.params.id)
+    await removeCardById(card_id)
+    res.status(204).send()
+  }
+ catch(error){
+ return res.status(400).send({message: "Invalid input"})
+ }
+}

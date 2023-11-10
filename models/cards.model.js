@@ -34,3 +34,19 @@ module.exports.insertCard = async (newCard) => {
     db.close();
   }
 };
+
+module.exports.removeCardById = async (card_id) => {
+try {
+  await db.connect();
+  if(ObjectId.isValid(card_id)){
+    const collection = db.getCollection('cards');
+    const deletedCard = await collection.findOneAndDelete({_id: card_id})
+    return deletedCard
+  }
+} catch(err){
+  throw err;
+}
+finally{
+  db.close()
+} 
+}

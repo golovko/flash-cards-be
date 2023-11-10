@@ -5,7 +5,7 @@ const db = require('./db/newConnect');
 const ObjectId = require('mongodb').ObjectId;
 
 const { usersGet, usersPost } = require('./controllers/users.controller');
-const { cardsGet, postCard} = require('./controllers/cards.controller');
+const { cardsGet, postCard, deleteCard} = require('./controllers/cards.controller');
 
 app.use(cors());
 app.use(express.json());
@@ -29,5 +29,6 @@ app.get('/api/cards/:card_id', async function (req, res) {
 app.get('/api/users', usersGet)
 app.post('/api/users', usersPost)
 app.post('/api/cards', postCard);
+app.delete('/api/cards/:card_id', deleteCard);
 
 module.exports = app;
