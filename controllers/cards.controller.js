@@ -7,8 +7,10 @@ const {
 } = require('../models/cards.model');
 
 module.exports.getCards = async (req, res, next) => {
+  const { topic } = req.query;
+  console.log(topic);
   try {
-    const fetchedCards = await fetchCards();
+    const fetchedCards = await fetchCards(topic);
     await res.status(200).send(fetchedCards);
   } catch {}
 };
