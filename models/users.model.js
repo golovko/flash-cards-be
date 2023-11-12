@@ -41,7 +41,7 @@ module.exports.postUser = async (testUser, req, res, next) => {
           password: responseData.password
         };
         
-        console.log(postedUser)
+        //console.log(postedUser)
         
         
         

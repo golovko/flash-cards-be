@@ -8,7 +8,7 @@ const { usersGet, usersPost } = require('./controllers/users.controller');
 const {
   getCards,
   getCardById,
-  postCard,
+  postCard, deleteCard
 } = require('./controllers/cards.controller');
 const { getTopics, postTopic } = require('./controllers/topics.controller');
 
@@ -21,6 +21,7 @@ app.get('/api/cards/:card_id', getCardById);
 app.get('/api/users', usersGet);
 app.post('/api/users', usersPost);
 app.post('/api/cards', postCard);
+app.delete('/api/cards/:card_id', deleteCard);
 
 app.get('/api/topics', getTopics);
 app.post('/api/topics', postTopic);
