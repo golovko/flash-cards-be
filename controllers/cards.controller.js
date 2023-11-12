@@ -3,7 +3,8 @@ const { ObjectId } = require('mongodb');
 const {
   fetchCards,
   insertCard,
-  fetchCardById, removeCardById
+  fetchCardById, removeCardById,
+  updateCardIsCorrectPatch
 } = require('../models/cards.model');
 
 module.exports.getCards = async (req, res, next) => {
@@ -50,3 +51,22 @@ module.exports.getCardById = async (req, res, next) => {
     console.log(err)
   }
 };
+
+module.exports.updateCardIsCorrect = async (req, res, next) => {
+ 
+  try {
+    const { card_id } = req.params;
+    console.log("receiving card id contr: ", card_id);
+    const { isCorrect } = req.body;
+    const cardToUpdate = await updateCardIsCorrectPatch(card_id, isCorrect);
+
+    if (!cardToUpdate) {
+      return res.status(404).send({ message: "Card not found" });
+    }
+
+  res.status(204).send({ message: "Card updated successfully", card: cardToUpdate });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 500).send({ message: error.message || "Error updating card" });
+  }
+}
