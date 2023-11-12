@@ -4,7 +4,7 @@ const {
   fetchCards,
   insertCard,
   fetchCardById, removeCardById,
-  updateCardIsCorrectPatch
+  updateCardIsCorrectPatch, resetCardsIsCorrect
 } = require('../models/cards.model');
 
 module.exports.getCards = async (req, res, next) => {
@@ -56,7 +56,7 @@ module.exports.updateCardIsCorrect = async (req, res, next) => {
  
   try {
     const { card_id } = req.params;
-    console.log("receiving card id contr: ", card_id);
+    // console.log("receiving card id contr: ", card_id);
     const { isCorrect } = req.body;
     const cardToUpdate = await updateCardIsCorrectPatch(card_id, isCorrect);
 
@@ -66,7 +66,22 @@ module.exports.updateCardIsCorrect = async (req, res, next) => {
 
   res.status(204).send({ message: "Card updated successfully", card: cardToUpdate });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(error.status || 500).send({ message: error.message || "Error updating card" });
   }
 }
+
+
+module.exports.resetAllCards = async (req, res, next) => {
+  const {topic} = req.query;
+  console.log(topic);
+ 
+  try {
+     await resetCardsIsCorrect(topic);
+
+    res.status(204).send({ message: 'Successfully reset isCorrect for cards' });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 500).send({ message: error.message || 'Error resetting cards' });
+  }
+};

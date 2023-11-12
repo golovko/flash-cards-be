@@ -57,7 +57,8 @@ try {
     return deletedCard
   } else{
    return res.status(400).send({message: "Invalid input"}) //card not found
-   //QUESTION for learning res.? can res be in model? ???       return Promise.reject ({ status: 404, message: 'Card does not exist' });
+   //QUESTION for learning res.? can res be in model? 
+   //???       return Promise.reject ({ status: 404, message: 'Card does not exist' });
   }
 } catch(err){
   throw err;
@@ -71,7 +72,6 @@ finally{
 module.exports.updateCardIsCorrectPatch = async (card_id) => {
   try {
     await db.connect();
-
     const objectId = new ObjectId(card_id);
 
     const collection = db.getCollection('cards');
@@ -98,5 +98,38 @@ module.exports.updateCardIsCorrectPatch = async (card_id) => {
     db.close();
   }
 };
+
+
+// reset all cards on ${topic} isCorrect => false
+
+module.exports.resetCardsIsCorrect = async(topic) => {
+  const query = topic ? { topic } : {};
+  
+  try {
+    await db.connect();
+    const collection = db.getCollection('cards');
+
+    const updatedCards = await collection.updateMany(
+      query,
+      { $set: { isCorrect: false } }
+    );
+    
+    if (updatedCards.matchedCount === 0) {
+      throw { status: 404, message: `No cards found` };
+    }
+    // console.log(">>>> ",updatedCards)
+    // console.log("updatedCards count >>> ", updatedCards.matchedCount);
+
+    return { message: 'Successfully reset isCorrect for All cards' };
+  } catch (error) {
+    console.error(error)
+    throw error;
+  } finally {
+    db.close();
+  }
+};
+
+
+
 
 
