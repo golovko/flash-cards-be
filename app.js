@@ -1,14 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const db = require('./db/newConnect');
-const ObjectId = require('mongodb').ObjectId;
 
 const { usersGet, usersPost } = require('./controllers/users.controller');
 const {
   getCards,
   getCardById,
-  postCard, deleteCard
+  postCard,
+  deleteCard,
 } = require('./controllers/cards.controller');
 const { getTopics, postTopic } = require('./controllers/topics.controller');
 
