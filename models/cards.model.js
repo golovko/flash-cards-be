@@ -42,8 +42,7 @@ try {
   if(ObjectId.isValid(card_id)){
     const collection = db.getCollection('cards');
 
-    const deletedCard = await collection.findOneAndDelete({_id: card_id})
-    return deletedCard
+  await collection.findOneAndDelete({_id: card_id})
   } else{
    return res.status(400).send({message: "Invalid input"})
   }
