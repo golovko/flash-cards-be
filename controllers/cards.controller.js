@@ -69,7 +69,7 @@ module.exports.updateCard = async (req, res, next) => {
 
   res.status(200).send({ message: "Card updated successfully", card: cardToUpdate });
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     res.status(error.status || 500).send({ message: error.message || "Error updating card" });
   }
 }
@@ -77,7 +77,6 @@ module.exports.updateCard = async (req, res, next) => {
 
 module.exports.resetAllCards = async (req, res, next) => {
   const {topic} = req.query;
-  // console.log(topic);
    try {
      await resetCardsIsCorrect(topic);
 
