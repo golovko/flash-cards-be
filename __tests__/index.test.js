@@ -83,6 +83,7 @@ describe("cards endpoints tests", () => {
     await request(app)
       .get("/api/cards/" + id)
       .then((response) => {
+        console.log(">>>", response.body);
         expect(response.body._id).toBe(id);
       });
   });
@@ -136,7 +137,32 @@ describe("Users tests", () => {
 
 describe("/api/cards/:card_id", () => {
   it("DELETE: 204 deletes specific card and return no body", async () => {
-    const card_id = "654e09bff3b05bcb57917c0c";
+    let card_id;
+    await request(app)
+      .get("/api/cards")
+      .then((response) => {
+        card_id = response.body[0]._id;
+        console.log(card_id);
+      });
+    await request(app)
+      .delete("/api/cards/" + card_id)
+      .then((response) => {
+        expect(response.status).toBe(204);
+        expect(response.body).toEqual({});
+      });
+  });
+
+  // it("DELETE: 400 status and sends an error message when given invalid id", async () => {
+  // await request(app)
+  // .delete('/api/cards/not-an-id')
+  // .then((response) => {
+  //   expect(response.status).toBe(400)
+  //   expect(response.body.message).toBe('Invalid input')
+  // })
+  // })
+});
+describe("Topics tests", () => {
+  test("GET /api/topics", async () => {
     await request(app)
       .delete(`/api/cards/${card_id}`)
       .then((response) => {
@@ -214,6 +240,70 @@ describe("Topics tests", () => {
       .send(updatedInfo)
       .then((response) => {
         expect(response.status).toBe(200);
+      });
+  });
+});
+
+describe("Updated isCorrect answer on the card tests", () => {
+  test("PATCH /api/cards/:card_id updates isCorrect property of the single card", async () => {
+    const updateToSend = { isCorrect: true };
+    let id;
+    await request(app)
+      .get("/api/cards")
+      .then((response) => {
+        id = response.body[0]._id;
+      });
+    await request(app)
+      .patch(`/api/cards/${id}`)
+      .send(updateToSend)
+      .then((response) => {
+        // console.log(response)
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Card updated successfully");
+        expect(response.body.card.isCorrect).toBe(true);
+      });
+  });
+
+  test("PATCH /api/cards/:card_id updates isCorrect property of the single card", async () => {
+    const updateToSend = { topic: "Neuroscience" };
+    let id;
+    await request(app)
+      .get("/api/cards")
+      .then((response) => {
+        id = response.body[0]._id;
+      });
+    await request(app)
+      .patch(`/api/cards/${id}`)
+      .send(updateToSend)
+      .then((response) => {
+        // console.log(response)
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Card updated successfully");
+        expect(response.body.card.topic).toBe("Neuroscience");
+      });
+  });
+});
+
+describe("reset isCorrect to false ", () => {
+  test("PATCH /api/cards resets isCorrect property of all cards", async () => {
+    const updateToSend = { isCorrect: false };
+    await request(app)
+      .patch(`/api/cards`)
+      .send(updateToSend)
+      .then((response) => {
+        expect(response.status).toBe(204);
+      });
+  });
+
+  test("PATCH /api/cards/:topic resets isCorrect property of all cards on the topic", async () => {
+    const topic = "Biology";
+    const updateToSend = { isCorrect: false };
+
+    await request(app)
+      .patch(`/api/cards?${topic}`)
+      .send(updateToSend)
+      .then((response) => {
+        expect(response.status).toBe(204);
       });
   });
 });
