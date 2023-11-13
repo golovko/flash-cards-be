@@ -41,8 +41,10 @@ try {
   await db.connect();
   if(ObjectId.isValid(card_id)){
     const collection = db.getCollection('cards');
-
+    
   await collection.findOneAndDelete({_id: card_id})
+  
+  return collection 
   } 
 } catch(error){
   console.log(error)

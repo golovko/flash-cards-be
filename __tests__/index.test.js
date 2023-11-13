@@ -142,6 +142,7 @@ it("DELETE: 204 deletes specific card and return no body", async () => {
   .get('/api/cards')
   .then((response)=> {
     card_id = response.body[0]._id
+    console.log(card_id)
   })
   await request(app)
   .delete('/api/cards/' + card_id)
