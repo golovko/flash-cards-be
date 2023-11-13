@@ -9,6 +9,7 @@ exports.biologyCards = [
     tags: ['Cell Structure', 'Cell Function'],
     createdAt: new Date(),
     updatedAt: new Date(),
+    isCorrect: false,
   },
   {
     published: true,
@@ -21,6 +22,7 @@ exports.biologyCards = [
     tags: ['Photosynthesis', 'Plants'],
     createdAt: new Date(),
     updatedAt: new Date(),
+    isCorrect: false,
   },
   {
     published: true,
@@ -33,6 +35,7 @@ exports.biologyCards = [
     tags: ['DNA Replication', 'Genetics'],
     createdAt: new Date(),
     updatedAt: new Date(),
+    isCorrect: false,
   },
   {
     published: true,
@@ -45,6 +48,7 @@ exports.biologyCards = [
     tags: ['Evolutionary Theory', 'Charles Darwin'],
     createdAt: new Date(),
     updatedAt: new Date(),
+    isCorrect: false,
   },
   {
     published: true,
@@ -57,6 +61,7 @@ exports.biologyCards = [
     tags: ['Organ Systems', 'Anatomy'],
     createdAt: new Date(),
     updatedAt: new Date(),
+    isCorrect: false,
   },
   {
     published: true,
@@ -69,6 +74,7 @@ exports.biologyCards = [
     tags: ['Mitosis', 'Cell Division'],
     createdAt: new Date(),
     updatedAt: new Date(),
+    isCorrect: false,
   },
   {
     published: true,
@@ -81,6 +87,7 @@ exports.biologyCards = [
     tags: ['Ecosystems', 'Environmental Science'],
     createdAt: new Date(),
     updatedAt: new Date(),
+    isCorrect: false,
   },
   {
     published: true,
@@ -93,6 +100,7 @@ exports.biologyCards = [
     tags: ['Genes', 'Genetics'],
     createdAt: new Date(),
     updatedAt: new Date(),
+    isCorrect: false,
   },
   {
     published: true,
@@ -105,6 +113,7 @@ exports.biologyCards = [
     tags: ['Endocrine System', 'Hormones'],
     createdAt: new Date(),
     updatedAt: new Date(),
+    isCorrect: false,
   },
   {
     published: true,
@@ -117,5 +126,6 @@ exports.biologyCards = [
     tags: ['Biodiversity', 'Conservation'],
     createdAt: new Date(),
     updatedAt: new Date(),
+    isCorrect: false,
   },
 ];
