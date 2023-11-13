@@ -8,7 +8,7 @@ const { usersGet, usersPost } = require('./controllers/users.controller');
 const {
   getCards,
   getCardById,
-  postCard, deleteCard, updateCardIsCorrect, resetAllCards
+  postCard, deleteCard, updateCard, resetAllCards
 } = require('./controllers/cards.controller');
 const { getTopics, postTopic } = require('./controllers/topics.controller');
 
@@ -19,7 +19,7 @@ app.get('/api/cards', getCards);
 app.get('/api/cards/:card_id', getCardById);
 app.post('/api/cards', postCard);
 app.delete('/api/cards/:card_id', deleteCard);
-app.patch('/api/cards/:card_id', updateCardIsCorrect);
+app.patch('/api/cards/:card_id', updateCard);
 app.patch('/api/cards', resetAllCards); //
 
 app.get('/api/users', usersGet);

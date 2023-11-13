@@ -69,7 +69,8 @@ finally{
 }
 
 
-module.exports.updateCardIsCorrectPatch = async (card_id) => {
+module.exports.updateCardPatch = async (card_id, cardUpdate) => {
+  const { answer, topic, isCorrect } = cardUpdate;
   try {
     await db.connect();
     const objectId = new ObjectId(card_id);
@@ -79,16 +80,22 @@ module.exports.updateCardIsCorrectPatch = async (card_id) => {
     // console.log("All Cards:", await collection.find({}).toArray());
     const updatedCard = await collection.updateOne(
       { _id: objectId },
-      { $set: { isCorrect: true } },
+      { $set: {
+          answer: answer,
+          topic: topic,
+          isCorrect: isCorrect,
+        },
+    },
       { returnDocument: 'after' }
     );
 // console.log("updatedCard >>", updatedCard)
     if (updatedCard.matchedCount === 0) {
-      console.log("Card not found:", card_id);
+      // console.log("Card not found:", card_id);
       throw new Error("Card not found");
     } else if (updatedCard.matchedCount === 1) {
-      console.log("Card updated successfully");
-      return { message: "Card updated successfully" };
+      // console.log("Card updated successfully");
+      const patchedCard = await collection.findOne({ _id: objectId})
+      return patchedCard ;
     }
 
     

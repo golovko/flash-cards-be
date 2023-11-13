@@ -4,7 +4,7 @@ const {
   fetchCards,
   insertCard,
   fetchCardById, removeCardById,
-  updateCardIsCorrectPatch, resetCardsIsCorrect
+  updateCardPatch, resetCardsIsCorrect
 } = require('../models/cards.model');
 
 module.exports.getCards = async (req, res, next) => {
@@ -52,19 +52,22 @@ module.exports.getCardById = async (req, res, next) => {
   }
 };
 
-module.exports.updateCardIsCorrect = async (req, res, next) => {
+module.exports.updateCard = async (req, res, next) => {
  
   try {
+    const newUpdate = req.body;
     const { card_id } = req.params;
-    // console.log("receiving card id contr: ", card_id);
-    const { isCorrect } = req.body;
-    const cardToUpdate = await updateCardIsCorrectPatch(card_id, isCorrect);
 
+    if (!newUpdate.answer && !newUpdate.topic && newUpdate.isCorrect === undefined) {
+      return res.status(400).send({ message: 'At least one field must be provided for update' });
+    }
+
+    const cardToUpdate = await updateCardPatch(card_id, newUpdate);
     if (!cardToUpdate) {
       return res.status(404).send({ message: "Card not found" });
     }
 
-  res.status(204).send({ message: "Card updated successfully", card: cardToUpdate });
+  res.status(200).send({ message: "Card updated successfully", card: cardToUpdate });
   } catch (error) {
     // console.error(error);
     res.status(error.status || 500).send({ message: error.message || "Error updating card" });
@@ -74,9 +77,8 @@ module.exports.updateCardIsCorrect = async (req, res, next) => {
 
 module.exports.resetAllCards = async (req, res, next) => {
   const {topic} = req.query;
-  console.log(topic);
- 
-  try {
+  // console.log(topic);
+   try {
      await resetCardsIsCorrect(topic);
 
     res.status(204).send({ message: 'Successfully reset isCorrect for cards' });
