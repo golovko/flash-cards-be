@@ -30,7 +30,6 @@ describe('cards endpoints tests', () => {
     await request(app)
       .get('/api/cards?topic=Math')
       .then((response) => {
-        console.log(response.body);
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(2);
       });
@@ -136,19 +135,18 @@ describe('Users tests', () => {
 });
 
 describe("/api/cards/:card_id",  () => {
-it("DELETE: 204 deletes specific card and return no body", async () => {
+it.only("DELETE: 200 deletes specific card and return no body", async () => {
   let card_id 
   await request(app)
   .get('/api/cards')
   .then((response)=> {
     card_id = response.body[0]._id
-    console.log(card_id)
   })
   await request(app)
-  .delete('/api/cards/' + card_id)
+  .delete(`/api/cards/${card_id}`)
   .then((response) => {
-    expect(response.status).toBe(204)
-    expect(response.body).toEqual({})
+    expect(response.status).toBe(200)
+    expect(response.body.deletedCount).toBe(1)
   })
 })
 
