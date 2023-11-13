@@ -35,12 +35,12 @@ module.exports.postCard = async (req, res, next) => {
 module.exports.deleteCard = async (req, res, next) => {
   try{
     const { card_id } = req.params
+    console.log(card_id)
+      await removeCardById(card_id, req, res)
+      res.status(204).send()
     
-    await removeCardById(card_id, req, res)
-    res.status(204).send()
-  }
- catch(error){
-
+  } catch(error){
+    console.error(error)
  }
 }
 module.exports.getCardById = async (req, res, next) => {
