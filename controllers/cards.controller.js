@@ -35,10 +35,8 @@ module.exports.postCard = async (req, res, next) => {
 module.exports.deleteCard = async (req, res, next) => {
   try{
     const { card_id } = req.params
-    console.log(card_id)
-      await removeCardById(card_id, req, res)
-      res.status(204).send()
-    
+     const deletingCard = await removeCardById(card_id)
+      return res.status(200).send(deletingCard)
   } catch(error){
     console.error(error)
  }
