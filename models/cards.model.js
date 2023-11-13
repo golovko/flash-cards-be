@@ -36,6 +36,24 @@ module.exports.insertCard = async (newCard) => {
   }
 };
 
+module.exports.removeCardById = async (card_id, req, res) => {
+try {
+  await db.connect();
+  if(ObjectId.isValid(card_id)){
+    const collection = db.getCollection('cards');
+
+  await collection.findOneAndDelete({_id: card_id})
+  } else{
+   return res.status(400).send({message: "Invalid input"})
+  }
+} catch(err){
+  throw err;
+}
+finally{
+  db.close()
+} 
+}
+
 module.exports.fetchCardById = async (card_id) => {
   try {
     await db.connect();
