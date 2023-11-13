@@ -164,25 +164,6 @@ describe("/api/cards/:card_id", () => {
 describe("Topics tests", () => {
   test("GET /api/topics", async () => {
     await request(app)
-      .delete(`/api/cards/${card_id}`)
-      .then((response) => {
-        expect(response.status).toBe(204);
-        expect(response.body);
-      });
-  });
-
-  it("DELETE: 400 status and sends an error message when given invalid id", async () => {
-    await request(app)
-      .delete("/api/cards/not-an-id")
-      .then((response) => {
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("Invalid input");
-      });
-  });
-});
-describe("Topics tests", () => {
-  test("GET /api/topics", async () => {
-    await request(app)
       .get("/api/topics")
       .then((response) => {
         expect(response.status).toBe(200);
@@ -218,7 +199,7 @@ describe("Topics tests", () => {
       });
   });
 
-  test.only("PATCH /api/topics/:slug", async () => {
+  test("PATCH /api/topics/:slug", async () => {
     const newTopic = {
       name: "Test Topic",
       description: "Test Description",
@@ -235,7 +216,7 @@ describe("Topics tests", () => {
       description: "testDescriptionUpdated",
     };
 
-    const response = await request(app)
+    await request(app)
       .patch(`/api/topics/${newTopic.slug}`)
       .send(updatedInfo)
       .then((response) => {

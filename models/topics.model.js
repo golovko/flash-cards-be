@@ -55,12 +55,6 @@ module.exports.updateTopicBySlug = async (slug, updatedInfo) => {
     );
     console.log(updatedTopic, "updated");
     return updatedTopic;
-    // if (updatedTopic.matchedCount === 0) {
-    //   return Promise.reject({ msg: "Topic not found!" });
-    // } else if (updatedTopic.matchedCount === 1) {
-    //   const patchedTopic = await collection.findOne({ slug: slug });
-    //   return patchedTopic;
-    // }
   } catch (err) {
     throw err;
   } finally {

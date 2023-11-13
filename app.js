@@ -13,8 +13,12 @@ const {
   updateCard,
   resetAllCards,
 } = require("./controllers/cards.controller");
-const { getTopics, postTopic } = require("./controllers/topics.controller");
-
+const {
+  getTopics,
+  postTopic,
+  deleteTopic,
+  editTopic,
+} = require("./controllers/topics.controller");
 app.use(cors());
 app.use(express.json());
 
@@ -23,9 +27,14 @@ app.get("/api/cards/:card_id", getCardById);
 app.post("/api/cards", postCard);
 app.delete("/api/cards/:card_id", deleteCard);
 app.patch("/api/cards/:card_id", updateCard);
-app.patch("/api/cards", resetAllCards); //
+app.patch("/api/cards", resetAllCards);
 
 app.get("/api/users", usersGet);
 app.post("/api/users", usersPost);
+
+app.get("/api/topics", getTopics);
+app.post("/api/topics", postTopic);
+app.delete("/api/topics/:slug", deleteTopic);
+app.patch("/api/topics/:slug", editTopic);
 
 module.exports = app;

@@ -1,4 +1,3 @@
-const { MongoServerClosedError } = require("mongodb");
 const {
   fetchTopics,
   insertTopic,
