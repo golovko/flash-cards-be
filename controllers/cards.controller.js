@@ -83,6 +83,5 @@ module.exports.resetAllCards = async (req, res, next) => {
     res.status(204).send({ message: 'Successfully reset isCorrect for cards' });
   } catch (error) {
     console.error(error);
-    res.status(error.status || 500).send({ message: error.message || 'Error resetting cards' });
-  }
+    res.status(error.status || 500).send({ message: error.message || 'Error resetting cards' });  }
 };
