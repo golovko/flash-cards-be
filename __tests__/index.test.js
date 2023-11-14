@@ -40,6 +40,7 @@ describe('cards endpoints tests', () => {
       question: 'How many hairs are there?',
       answer: '46',
       topic: 'Biology',
+      author: 'BiologyExpert',
     };
 
     await request(app)
@@ -53,6 +54,7 @@ describe('cards endpoints tests', () => {
           question: 'How many hairs are there?',
           answer: '46',
           topic: 'Biology',
+          author: 'BiologyExpert',
         });
       });
   });
