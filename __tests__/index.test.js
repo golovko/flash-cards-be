@@ -40,6 +40,7 @@ describe('cards endpoints tests', () => {
       question: 'How many hairs are there?',
       answer: '46',
       topic: 'Biology',
+      author: 'BiologyExpert',
     };
 
     await request(app)
@@ -53,6 +54,7 @@ describe('cards endpoints tests', () => {
           question: 'How many hairs are there?',
           answer: '46',
           topic: 'Biology',
+          author: 'BiologyExpert',
         });
       });
   });
@@ -149,15 +151,6 @@ describe('/api/cards/:card_id', () => {
         expect(response.body.deletedCount).toBe(1);
       });
   });
-
-  // it("DELETE: 400 status and sends an error message when given invalid id", async () => {
-  // await request(app)
-  // .delete('/api/cards/not-an-id')
-  // .then((response) => {
-  //   expect(response.status).toBe(400)
-  //   expect(response.body.message).toBe('Invalid input')
-  // })
-  // })
 });
 describe('Topics tests', () => {
   test('GET /api/topics', async () => {
@@ -166,6 +159,11 @@ describe('Topics tests', () => {
       .then((response) => {
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(2);
+        expect(Array.isArray(response.body)).toBe(true);
+        response.body.forEach((topic) => {
+          expect(topic).toHaveProperty('name');
+          expect(topic).toHaveProperty('description');
+        });
       });
   });
   test('POST /api/topics', async () => {
@@ -178,7 +176,8 @@ describe('Topics tests', () => {
       .send(newTopic)
       .then((response) => {
         expect(response.status).toBe(201);
-        expect(response.body.acknowledged).toBe(true);
+        expect(response.body).toHaveProperty('acknowledged');
+        expect(response.body).toHaveProperty('insertedId');
       });
   });
   test('GET /api/topics/username', async () => {
@@ -203,6 +202,14 @@ describe('Topics tests', () => {
       .then((response) => {
         expect(response.status).toBe(204);
       });
+    await request(app)
+      .get(`/api/topics`)
+      .then((response) => {
+        const deletedTopic = response.body.find(
+          (topic) => topic.slug === 'slug'
+        );
+        expect(deletedTopic).toBeUndefined();
+      });
   });
 
   test('PATCH /api/topics/:slug', async () => {
@@ -211,12 +218,8 @@ describe('Topics tests', () => {
       description: 'Test Description',
       slug: 'testSlug',
     };
-    await request(app)
-      .post('/api/topics')
-      .send(newTopic)
-      .then((response) => {
-        console.log(response);
-      });
+    await request(app).post('/api/topics').send(newTopic);
+
     const updatedInfo = {
       name: 'testNameUpdated',
       description: 'testDescriptionUpdated',
@@ -227,6 +230,18 @@ describe('Topics tests', () => {
       .send(updatedInfo)
       .then((response) => {
         expect(response.status).toBe(200);
+        expect(response.body.modifiedCount).toBe(1);
+        expect(response.body.acknowledged).toBeTruthy();
+      });
+
+    await request(app)
+      .get(`/api/topics`)
+      .then((response) => {
+        const updatedTopic = response.body.find(
+          (topic) => topic.slug === 'testSlug'
+        );
+        expect(updatedTopic.name).toBe(updatedInfo.name);
+        expect(updatedTopic.description).toBe(updatedInfo.description);
       });
   });
 });

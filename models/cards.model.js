@@ -16,7 +16,7 @@ module.exports.fetchCards = async (topic) => {
 };
 
 module.exports.insertCard = async (newCard) => {
-  const { question, answer, topic } = newCard;
+  const { question, answer, topic, author } = newCard;
 
   try {
     await db.connect();
@@ -25,6 +25,7 @@ module.exports.insertCard = async (newCard) => {
       question,
       answer,
       topic,
+      author,
     });
     const cardId = new ObjectId(insertedCard.insertedId);
     const postedCard = await collection.findOne({ _id: cardId });
@@ -37,20 +38,19 @@ module.exports.insertCard = async (newCard) => {
 };
 
 module.exports.removeCardById = async (card_id) => {
-try {
-  await db.connect();
-  const id = new ObjectId(card_id)
-  const collection = await db.getCollection('cards');
-  const deletedCard = await collection.deleteOne({_id: id})
-  return deletedCard
-} catch(error){
-  console.log(error)
-  throw error;
-}
-finally{
-  db.close()
-} 
-}
+  try {
+    await db.connect();
+    const id = new ObjectId(card_id);
+    const collection = await db.getCollection('cards');
+    const deletedCard = await collection.deleteOne({ _id: id });
+    return deletedCard;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  } finally {
+    db.close();
+  }
+};
 
 module.exports.fetchCardById = async (card_id) => {
   try {
@@ -63,8 +63,6 @@ module.exports.fetchCardById = async (card_id) => {
   }
 };
 
-
-
 module.exports.updateCardPatch = async (card_id, cardUpdate) => {
   const { answer, topic, isCorrect } = cardUpdate;
   try {
@@ -74,19 +72,20 @@ module.exports.updateCardPatch = async (card_id, cardUpdate) => {
     const collection = db.getCollection('cards');
     const updatedCard = await collection.updateOne(
       { _id: objectId },
-      { $set: {
+      {
+        $set: {
           answer: answer,
           topic: topic,
           isCorrect: isCorrect,
         },
-    },
+      },
       { returnDocument: 'after' }
     );
     if (updatedCard.matchedCount === 0) {
-      throw new Error("Card not found");
+      throw new Error('Card not found');
     } else if (updatedCard.matchedCount === 1) {
-      const patchedCard = await collection.findOne({ _id: objectId})
-      return patchedCard ;
+      const patchedCard = await collection.findOne({ _id: objectId });
+      return patchedCard;
     }
   } catch (err) {
     throw err;
@@ -95,32 +94,25 @@ module.exports.updateCardPatch = async (card_id, cardUpdate) => {
   }
 };
 
-
-
 // reset all cards on ${topic} isCorrect => false
-module.exports.resetCardsIsCorrect = async(topic) => {
+module.exports.resetCardsIsCorrect = async (topic) => {
   const query = topic ? { topic } : {};
-  
+
   try {
     await db.connect();
     const collection = db.getCollection('cards');
-    const updatedCards = await collection.updateMany(
-      query,
-      { $set: { isCorrect: false } }
-    );
-    
+    const updatedCards = await collection.updateMany(query, {
+      $set: { isCorrect: false },
+    });
+
     if (updatedCards.matchedCount === 0) {
       throw { status: 404, message: `No cards found` };
     }
     return { message: 'Successfully reset isCorrect for All cards' };
   } catch (error) {
-    console.error(error)
+    console.error(error);
     throw error;
   } finally {
     db.close();
   }
 };
-
-
-
-

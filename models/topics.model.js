@@ -43,8 +43,6 @@ module.exports.deleteTopicBySlug = async (slug) => {
 };
 
 module.exports.updateTopicBySlug = async (slug, updatedInfo) => {
-  console.log(slug);
-  console.log(updatedInfo);
   try {
     await db.connect();
     const collection = db.getCollection('topics');
@@ -55,7 +53,6 @@ module.exports.updateTopicBySlug = async (slug, updatedInfo) => {
       },
       { returnDocument: 'after' }
     );
-    console.log(updatedTopic, 'updated');
     return updatedTopic;
   } catch (err) {
     throw err;
