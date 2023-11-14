@@ -1,11 +1,11 @@
-const app = require("../app");
-const db = require("../db/newConnect");
-const request = require("supertest");
+const app = require('../app');
+const db = require('../db/newConnect');
+const request = require('supertest');
 const {
   SeedMongo,
   seedTopicsScript,
   seedUsersScript,
-} = require("../db/SeedMongo.js");
+} = require('../db/SeedMongo.js');
 
 beforeEach(async () => {
   await db.connect();
@@ -17,94 +17,94 @@ afterAll(async () => {
   await db.close();
 });
 
-describe("cards endpoints tests", () => {
-  test("GET /api/cards should return a list of cards from the test database", async () => {
+describe('cards endpoints tests', () => {
+  test('GET /api/cards should return a list of cards from the test database', async () => {
     await request(app)
-      .get("/api/cards")
+      .get('/api/cards')
       .then((response) => {
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(10);
       });
   });
-  test("GET /api/cards?topic=Math should return a list of cards from the test database", async () => {
+  test('GET /api/cards?topic=Math should return a list of cards from the test database', async () => {
     await request(app)
-      .get("/api/cards?topic=Math")
+      .get('/api/cards?topic=Math')
       .then((response) => {
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(2);
       });
   });
 
-  test("POST /api/cards should add a card to the database", async () => {
+  test('POST /api/cards should add a card to the database', async () => {
     const newItem = {
-      question: "How many hairs are there?",
-      answer: "46",
-      topic: "Biology",
+      question: 'How many hairs are there?',
+      answer: '46',
+      topic: 'Biology',
     };
 
     await request(app)
-      .post("/api/cards")
+      .post('/api/cards')
       .send(newItem)
       .then((response) => {
         const postedCard = response.body;
         expect(response.statusCode).toBe(201);
         expect(postedCard.card).toMatchObject({
           _id: expect.any(String),
-          question: "How many hairs are there?",
-          answer: "46",
-          topic: "Biology",
+          question: 'How many hairs are there?',
+          answer: '46',
+          topic: 'Biology',
         });
       });
   });
 
-  test("POST /api/cards 400 responds with an appropriate status and error message when provided with a no card body", async () => {
+  test('POST /api/cards 400 responds with an appropriate status and error message when provided with a no card body', async () => {
     const newItem = {
-      question: "",
-      answer: "",
-      topic: "Biology",
+      question: '',
+      answer: '',
+      topic: 'Biology',
     };
 
     await request(app)
-      .post("/api/cards")
+      .post('/api/cards')
       .send(newItem)
       .expect(400)
       .then((response) => {
-        expect(response.body.message).toBe("Card fields cannot be empty");
+        expect(response.body.message).toBe('Card fields cannot be empty');
       });
   });
-  test("should return 1 card by ID", async () => {
+  test('should return 1 card by ID', async () => {
     let id;
     await request(app)
-      .get("/api/cards")
+      .get('/api/cards')
       .then((response) => {
         id = response.body[0]._id;
       });
     await request(app)
-      .get("/api/cards/" + id)
+      .get('/api/cards/' + id)
       .then((response) => {
-        console.log(">>>", response.body);
+        console.log('>>>', response.body);
         expect(response.body._id).toBe(id);
       });
   });
 });
 
-describe("Users tests", () => {
-  test("GET /api/users should return a list of users from the test database", async () => {
+describe('Users tests', () => {
+  test('GET /api/users should return a list of users from the test database', async () => {
     await request(app)
-      .get("/api/users")
+      .get('/api/users')
       .then((response) => {
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(10);
       });
   });
-  test("POST /api/users should add a new user to the list of users", async () => {
+  test('POST /api/users should add a new user to the list of users', async () => {
     const testUser = {
-      username: "NewUser",
-      password: "password",
-      email: "newuser@test.com",
+      username: 'NewUser',
+      password: 'password',
+      email: 'newuser@test.com',
     };
     await request(app)
-      .post("/api/users")
+      .post('/api/users')
       .send(testUser)
       .then((response) => {
         const postedUser = response.body;
@@ -112,33 +112,33 @@ describe("Users tests", () => {
         expect(response.status).toBe(201);
         expect(postedUser.user).toMatchObject({
           _id: expect.any(String),
-          username: "NewUser",
-          password: "password",
-          email: "newuser@test.com",
+          username: 'NewUser',
+          password: 'password',
+          email: 'newuser@test.com',
         });
       });
   });
-  test("Check if a user is available on POST", async () => {
+  test('Check if a user is available on POST', async () => {
     const testNonUniqueUser = {
-      username: "CellBiologist",
-      password: "password",
-      email: "CellBiologist@test.com",
+      username: 'CellBiologist',
+      password: 'password',
+      email: 'CellBiologist@test.com',
     };
     await request(app)
-      .post("/api/users")
+      .post('/api/users')
       .send(testNonUniqueUser)
       .then((response) => {
         expect(response.status).toBe(400);
-        expect(response.body.msg).toBe("Username is already taken!");
+        expect(response.body.msg).toBe('Username is already taken!');
       });
   });
 });
 
-describe("/api/cards/:card_id", () => {
-  it.only("DELETE: 200 deletes specific card and return no body", async () => {
+describe('/api/cards/:card_id', () => {
+  it('DELETE: 200 deletes specific card and return no body', async () => {
     let card_id;
     await request(app)
-      .get("/api/cards")
+      .get('/api/cards')
       .then((response) => {
         card_id = response.body[0]._id;
       });
@@ -159,65 +159,69 @@ describe("/api/cards/:card_id", () => {
   // })
   // })
 });
-describe("Topics tests", () => {
-  test("GET /api/topics", async () => {
+describe('Topics tests', () => {
+  test('GET /api/topics', async () => {
     await request(app)
-      .get("/api/topics")
+      .get('/api/topics')
       .then((response) => {
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(2);
         expect(Array.isArray(response.body)).toBe(true);
         response.body.forEach((topic) => {
-          expect(topic).toHaveProperty("name");
-          expect(topic).toHaveProperty("description");
+          expect(topic).toHaveProperty('name');
+          expect(topic).toHaveProperty('description');
         });
       });
   });
-  test("POST /api/topics", async () => {
+  test('POST /api/topics', async () => {
     const newTopic = {
-      name: "New",
-      description: "description",
+      name: 'New',
+      description: 'description',
     };
     await request(app)
-      .post("/api/topics")
+      .post('/api/topics')
       .send(newTopic)
       .then((response) => {
         expect(response.status).toBe(201);
-        expect(response.body).toHaveProperty("acknowledged");
-        expect(response.body).toHaveProperty("insertedId");
+        expect(response.body).toHaveProperty('acknowledged');
+        expect(response.body).toHaveProperty('insertedId');
+      });
+  });
+  test('GET /api/topics/username', async () => {
+    await request(app)
+      .get('/api/topics/BiologyExpert')
+      .then((response) => {
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(1);
       });
   });
 
-  test("DELETE /api/topics/:slug", async () => {
+  test.only('DELETE /api/topics/:slug', async () => {
     const newTopic = {
-      name: "Test Topic",
-      description: "Test Description",
-      slug: "testSlug",
+      name: 'Test Topic',
+      description: 'Test Description',
+      slug: 'testSlug',
     };
-    await request(app).post("/api/topics").send(newTopic);
+    await request(app).post('/api/topics').send(newTopic);
     const slug = newTopic.slug;
     await request(app)
       .delete(`/api/topics/${slug}`)
       .then((response) => {
         expect(response.status).toBe(204);
-        return request(app).get(`/api/topics/${slug}`);
-      })
-      .then((response) => {
-        expect(response.status).toBe(404);
       });
   });
 
-  test.only("PATCH /api/topics/:slug", async () => {
+  test('PATCH /api/topics/:slug', async () => {
     const newTopic = {
-      name: "Test Topic",
-      description: "Test Description",
-      slug: "testSlug",
+      name: 'Test Topic',
+      description: 'Test Description',
+      slug: 'testSlug',
     };
-    await request(app).post("/api/topics").send(newTopic);
+    await request(app).post('/api/topics').send(newTopic);
 
     const updatedInfo = {
-      name: "testNameUpdated",
-      description: "testDescriptionUpdated",
+      name: 'testNameUpdated',
+      description: 'testDescriptionUpdated',
     };
 
     await request(app)
@@ -233,7 +237,7 @@ describe("Topics tests", () => {
       .get(`/api/topics`)
       .then((response) => {
         const updatedTopic = response.body.find(
-          (topic) => topic.slug === "testSlug"
+          (topic) => topic.slug === 'testSlug'
         );
         expect(updatedTopic.name).toBe(updatedInfo.name);
         expect(updatedTopic.description).toBe(updatedInfo.description);
@@ -241,12 +245,12 @@ describe("Topics tests", () => {
   });
 });
 
-describe("Updated isCorrect answer on the card tests", () => {
-  test("PATCH /api/cards/:card_id updates isCorrect property of the single card", async () => {
+describe('Updated isCorrect answer on the card tests', () => {
+  test('PATCH /api/cards/:card_id updates isCorrect property of the single card', async () => {
     const updateToSend = { isCorrect: true };
     let id;
     await request(app)
-      .get("/api/cards")
+      .get('/api/cards')
       .then((response) => {
         id = response.body[0]._id;
       });
@@ -256,16 +260,16 @@ describe("Updated isCorrect answer on the card tests", () => {
       .then((response) => {
         // console.log(response)
         expect(response.status).toBe(200);
-        expect(response.body.message).toBe("Card updated successfully");
+        expect(response.body.message).toBe('Card updated successfully');
         expect(response.body.card.isCorrect).toBe(true);
       });
   });
 
-  test("PATCH /api/cards/:card_id updates isCorrect property of the single card", async () => {
-    const updateToSend = { topic: "Neuroscience" };
+  test('PATCH /api/cards/:card_id updates isCorrect property of the single card', async () => {
+    const updateToSend = { topic: 'Neuroscience' };
     let id;
     await request(app)
-      .get("/api/cards")
+      .get('/api/cards')
       .then((response) => {
         id = response.body[0]._id;
       });
@@ -275,14 +279,14 @@ describe("Updated isCorrect answer on the card tests", () => {
       .then((response) => {
         // console.log(response)
         expect(response.status).toBe(200);
-        expect(response.body.message).toBe("Card updated successfully");
-        expect(response.body.card.topic).toBe("Neuroscience");
+        expect(response.body.message).toBe('Card updated successfully');
+        expect(response.body.card.topic).toBe('Neuroscience');
       });
   });
 });
 
-describe("reset isCorrect to false ", () => {
-  test("PATCH /api/cards resets isCorrect property of all cards", async () => {
+describe('reset isCorrect to false ', () => {
+  test('PATCH /api/cards resets isCorrect property of all cards', async () => {
     const updateToSend = { isCorrect: false };
     await request(app)
       .patch(`/api/cards`)
@@ -292,8 +296,8 @@ describe("reset isCorrect to false ", () => {
       });
   });
 
-  test("PATCH /api/cards/:topic resets isCorrect property of all cards on the topic", async () => {
-    const topic = "Biology";
+  test('PATCH /api/cards/:topic resets isCorrect property of all cards on the topic', async () => {
+    const topic = 'Biology';
     const updateToSend = { isCorrect: false };
 
     await request(app)
