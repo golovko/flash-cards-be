@@ -19,10 +19,12 @@ module.exports.insertTopic = async (topic) => {
   try {
     await db.connect();
     const collection = db.getCollection('topics');
+    const check = await collection.findOne({ slug: topic.slug });
+    if (check) throw { errorCode: 400, errorMessage: 'existed topic' };
     const inserted = await collection.insertOne(topic);
     return inserted;
   } catch (err) {
-    console.log(err);
+    return err;
   } finally {
     await db.close();
   }
