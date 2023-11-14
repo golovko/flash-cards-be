@@ -6,8 +6,9 @@ const {
 } = require("../models/topics.model");
 
 module.exports.getTopics = async (req, res, next) => {
+  const { username } = req.params;
   try {
-    const fetchedTopics = await fetchTopics();
+    const fetchedTopics = await fetchTopics(username);
     await res.status(200).send(fetchedTopics);
   } catch (err) {
     console.log(err);
