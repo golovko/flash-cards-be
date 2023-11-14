@@ -40,6 +40,8 @@ describe("cards endpoints tests", () => {
       question: "How many hairs are there?",
       answer: "46",
       topic: "Biology",
+      author: "BiologyExpert",
+    
     };
 
     await request(app)
@@ -53,6 +55,8 @@ describe("cards endpoints tests", () => {
           question: "How many hairs are there?",
           answer: "46",
           topic: "Biology",
+          author: "BiologyExpert",
+        
         });
       });
   });
@@ -62,6 +66,7 @@ describe("cards endpoints tests", () => {
       question: "",
       answer: "",
       topic: "Biology",
+    
     };
 
     await request(app)
@@ -135,7 +140,7 @@ describe("Users tests", () => {
 });
 
 describe("/api/cards/:card_id", () => {
-  it.only("DELETE: 200 deletes specific card and return no body", async () => {
+  it("DELETE: 200 deletes specific card and return no body", async () => {
     let card_id;
     await request(app)
       .get("/api/cards")
