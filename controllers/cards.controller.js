@@ -35,10 +35,8 @@ module.exports.postCard = async (req, res, next) => {
 module.exports.deleteCard = async (req, res, next) => {
   try{
     const { card_id } = req.params
-    console.log(card_id)
-      await removeCardById(card_id, req, res)
-      res.status(204).send()
-    
+     const deletingCard = await removeCardById(card_id)
+      return res.status(200).send(deletingCard)
   } catch(error){
     console.error(error)
  }
@@ -83,6 +81,5 @@ module.exports.resetAllCards = async (req, res, next) => {
     res.status(204).send({ message: 'Successfully reset isCorrect for cards' });
   } catch (error) {
     console.error(error);
-    res.status(error.status || 500).send({ message: error.message || 'Error resetting cards' });
-  }
+    res.status(error.status || 500).send({ message: error.message || 'Error resetting cards' });  }
 };

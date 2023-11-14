@@ -37,4 +37,11 @@ app.post("/api/topics", postTopic);
 app.delete("/api/topics/:slug", deleteTopic);
 app.patch("/api/topics/:slug", editTopic);
 
+app.get("/api/topics", getTopics);
+app.post("/api/topics", postTopic);
+
+app.all("/*", (req, res, next) => {
+  res.status(404).send({ msg: "path not found" });
+});
+
 module.exports = app;
