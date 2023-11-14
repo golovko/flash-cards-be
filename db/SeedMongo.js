@@ -2,15 +2,17 @@ const db = require('./newConnect');
 const { biologyCards } = require('./data/cards-mock');
 const { topicsMock } = require('../db/data/topics-mock');
 const { users } = require('./data/users-mock');
+const { getObjectId } = require('./helper');
 
 async function SeedMongo(dbm) {
   try {
     const collection = dbm.getCollection('cards');
     let res = await collection.drop();
-  
     const result = await collection.insertMany(biologyCards);
-    // console.log(result.insertedIds);
-  } catch (error) {}
+    console.log(result.insertedIds);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function seedScript() {
@@ -24,7 +26,7 @@ async function SeedUsers(dbm) {
   try {
     const collection = dbm.getCollection('users');
     let res = await collection.drop();
-   
+
     const result = await collection.insertMany(users);
     // console.log(result.insertedIds);
   } catch (error) {
@@ -42,9 +44,8 @@ async function SeedTopics(dbm) {
   try {
     const collection = dbm.getCollection('topics');
     let res = await collection.drop();
-   
+
     const result = await collection.insertMany(topicsMock);
-   
   } catch (error) {
     console.error('Error seeding topics: ', error);
   }
