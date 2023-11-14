@@ -23,5 +23,6 @@ app.post('/api/cards', postCard);
 app.delete('/api/cards/:card_id', deleteCard);
 
 app.get('/api/topics', getTopics);
+app.get('/api/topics/:username', getTopics);
 app.post('/api/topics', postTopic);
 module.exports = app;

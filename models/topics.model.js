@@ -1,10 +1,12 @@
 const db = require('../db/newConnect');
 
-module.exports.fetchTopics = async () => {
+module.exports.fetchTopics = async (username) => {
+  const query = {};
+  if (username) query.username = username;
   try {
     await db.connect();
     const collection = db.getCollection('topics');
-    const fetchedTopics = await collection.find({}).toArray();
+    const fetchedTopics = await collection.find(query).toArray();
     return fetchedTopics;
   } catch (err) {
     console.log(err);
