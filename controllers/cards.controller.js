@@ -13,7 +13,7 @@ module.exports.getCards = async (req, res, next) => {
   try {
     const fetchedCards = await fetchCards(topic);
     await res.status(200).send(fetchedCards);
-  } catch {}
+  } catch (err) {}
 };
 
 module.exports.postCard = async (req, res, next) => {

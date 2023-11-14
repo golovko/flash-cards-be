@@ -3,7 +3,7 @@ const {
   insertTopic,
   deleteTopicBySlug,
   updateTopicBySlug,
-} = require("../models/topics.model");
+} = require('../models/topics.model');
 
 module.exports.getTopics = async (req, res, next) => {
   const { username } = req.params;
@@ -16,8 +16,13 @@ module.exports.getTopics = async (req, res, next) => {
 };
 
 module.exports.postTopic = async (req, res, next) => {
-  const topic = await insertTopic(req.body);
-  res.status(201).send(topic);
+  try {
+    const topic = await insertTopic(req.body);
+    if (topic.errorCode) throw topic;
+    res.status(201).send(topic);
+  } catch (err) {
+    next(err);
+  }
 };
 
 module.exports.deleteTopic = async (req, res, next) => {
@@ -29,7 +34,7 @@ module.exports.deleteTopic = async (req, res, next) => {
     }
     return res.status(204).send();
   } catch (err) {
-    console.error("There was a problem deleting your topic", err);
+    console.error('There was a problem deleting your topic', err);
   }
 };
 

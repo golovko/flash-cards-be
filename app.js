@@ -19,6 +19,7 @@ const {
   deleteTopic,
   editTopic,
 } = require('./controllers/topics.controller');
+const { customErrors } = require('./errors/errorHandler');
 app.use(cors());
 app.use(express.json());
 
@@ -44,5 +45,7 @@ app.post('/api/topics', postTopic);
 app.all('/*', (req, res, next) => {
   res.status(404).send({ msg: 'path not found' });
 });
+
+app.use(customErrors);
 
 module.exports = app;
