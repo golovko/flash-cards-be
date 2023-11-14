@@ -21,8 +21,8 @@ module.exports.postTopic = async (req, res, next) => {
 
 module.exports.deleteTopic = async (req, res, next) => {
   try {
-    const { topicSlug } = req.params;
-    const deletedTopic = await deleteTopicBySlug(topicSlug);
+    const { slug } = req.params;
+    const deletedTopic = await deleteTopicBySlug(slug);
     if (!deletedTopic) {
       return res.status(404).send({ msg: "Topic doesn't exist!" });
     }

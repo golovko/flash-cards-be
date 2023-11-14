@@ -26,11 +26,11 @@ module.exports.insertTopic = async (topic) => {
   }
 };
 
-module.exports.deleteTopicBySlug = async (topicSlug) => {
+module.exports.deleteTopicBySlug = async (slug) => {
   try {
     await db.connect();
     const collection = db.getCollection("topics");
-    const deleted = await collection.findOneAndDelete({ slug: topicSlug });
+    const deleted = await collection.deleteOne({ slug: slug });
     return deleted;
   } catch (err) {
     console.error("Error deleting topic!", err);
