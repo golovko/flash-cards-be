@@ -9,7 +9,7 @@ const {
 
 module.exports.getCards = async (req, res, next) => {
   const { topic } = req.query;
-  console.log(topic);
+  // console.log(topic);
   try {
     const fetchedCards = await fetchCards(topic);
     await res.status(200).send(fetchedCards);
@@ -23,7 +23,6 @@ module.exports.postCard = async (req, res, next) => {
     if (!newCard.question || !newCard.answer || !newCard.topic) {
       return res.status(400).send({ message: 'Card fields cannot be empty' });
     }
-
     const insertedCard = await insertCard(newCard);
     res.status(201).send({ card: insertedCard });
   } catch (err) {
@@ -46,7 +45,7 @@ module.exports.getCardById = async (req, res, next) => {
     const fetchedCard = await fetchCardById(req.params.card_id);
     res.status(200).send(fetchedCard);
   } catch (err) {
-    console.log(err)
+    // console.log(err)
   }
 };
 

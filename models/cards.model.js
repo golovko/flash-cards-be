@@ -16,7 +16,7 @@ module.exports.fetchCards = async (topic) => {
 };
 
 module.exports.insertCard = async (newCard) => {
-  const { question, answer, topic } = newCard;
+  const { question, answer, topic, author} = newCard;
 
   try {
     await db.connect();
@@ -25,6 +25,7 @@ module.exports.insertCard = async (newCard) => {
       question,
       answer,
       topic,
+      author,
     });
     const cardId = new ObjectId(insertedCard.insertedId);
     const postedCard = await collection.findOne({ _id: cardId });
