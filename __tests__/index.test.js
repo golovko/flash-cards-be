@@ -151,15 +151,6 @@ describe('/api/cards/:card_id', () => {
         expect(response.body.deletedCount).toBe(1);
       });
   });
-
-  // it("DELETE: 400 status and sends an error message when given invalid id", async () => {
-  // await request(app)
-  // .delete('/api/cards/not-an-id')
-  // .then((response) => {
-  //   expect(response.status).toBe(400)
-  //   expect(response.body.message).toBe('Invalid input')
-  // })
-  // })
 });
 describe('Topics tests', () => {
   test('GET /api/topics', async () => {
@@ -198,7 +189,7 @@ describe('Topics tests', () => {
       });
   });
 
-  test.only('DELETE /api/topics/:slug', async () => {
+  test('DELETE /api/topics/:slug', async () => {
     const newTopic = {
       name: 'Test Topic',
       description: 'Test Description',
@@ -210,6 +201,14 @@ describe('Topics tests', () => {
       .delete(`/api/topics/${slug}`)
       .then((response) => {
         expect(response.status).toBe(204);
+      });
+    await request(app)
+      .get(`/api/topics`)
+      .then((response) => {
+        const deletedTopic = response.body.find(
+          (topic) => topic.slug === 'slug'
+        );
+        expect(deletedTopic).toBeUndefined();
       });
   });
 
