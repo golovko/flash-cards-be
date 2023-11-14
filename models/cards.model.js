@@ -26,6 +26,7 @@ module.exports.insertCard = async (newCard) => {
       answer,
       topic,
       author,
+      isCorrect: false,
     });
     const cardId = new ObjectId(insertedCard.insertedId);
     const postedCard = await collection.findOne({ _id: cardId });
