@@ -1,0 +1,25 @@
+openapi: '3.0.2'
+info:
+  title: Flash Cards API
+  version: '1.0'
+servers:
+  - url: https://flash-cards-be.onrender.com/api
+paths:
+  /cards:
+    get:
+      summary: List all cards
+      operationId: listCards
+      tags:
+        - cards
+      parameters:
+        - name: username
+          in: query
+          description: Returns cards that belong to user
+          required: false
+          schema:
+            type: string
+            maximum: 256
+            format: string
+      responses:
+        '200':
+          description: An array of cards
