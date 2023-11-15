@@ -128,4 +128,16 @@ exports.biologyCards = [
     updatedAt: new Date(),
     isCorrect: false,
   },
+  {
+    published: true,
+    author: 'BiologyExpert',
+    question: 'What is life?',
+    answer: 'The life is great.',
+    topic: 'Biology',
+    deck: ['Cell Biology'],
+    tags: ['Cell Structure', 'Cell Function'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isCorrect: false,
+  },
 ];

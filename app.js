@@ -6,7 +6,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 const { usersGet, usersPost } = require('./controllers/users.controller');
 const {
-  getCards,
+  getCards, 
   getCardById,
   postCard,
   deleteCard,
