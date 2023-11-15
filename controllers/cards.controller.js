@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb');
 const {
-  fetchCards,
+  fetchCards, fetchCardsByUser,
   insertCard,
   fetchCardById,
   removeCardById,
@@ -9,12 +9,33 @@ const {
 } = require('../models/cards.model');
 
 module.exports.getCards = async (req, res, next) => {
-  const { topic } = req.query;
+  const { user, topic} = req.query;
   try {
-    const fetchedCards = await fetchCards(topic);
-    await res.status(200).send(fetchedCards);
-  } catch (err) {}
-};
+    if (user){
+    const fetchedCardsByUser = await fetchCardsByUser(user, topic);
+   
+    res.status(200).send(fetchedCardsByUser);
+    }else {
+    res.status(400).json({ error: 'User parameter is required.' });
+    }
+  } catch (err){
+  }
+}
+
+// module.exports.getCardsByUser = async (req, res, next) => {
+//   const { user, topic} = req.query;
+//   try {
+//     if (user){
+//     const fetchedCardsByUser = await fetchCardsByUser(user, topic);
+   
+//     res.status(200).send(fetchedCardsByUser);
+//     }else {
+//     res.status(400).json({ error: 'User parameter is required.' });
+//     }
+//   } catch (err){
+//   }
+// }
+
 
 module.exports.postCard = async (req, res, next) => {
   try {
@@ -45,7 +66,6 @@ module.exports.getCardById = async (req, res, next) => {
     const fetchedCard = await fetchCardById(req.params.card_id);
     res.status(200).send(fetchedCard);
   } catch (err) {
-    // console.log(err)
   }
 };
 
@@ -81,11 +101,17 @@ module.exports.updateCard = async (req, res, next) => {
 };
 
 module.exports.resetAllCards = async (req, res, next) => {
-  const { topic } = req.query;
+  const { user, topic } = req.query;
   try {
-    await resetCardsIsCorrect(topic);
+    if (user) {
+      await resetCardsIsCorrect(user, topic);
 
-    res.status(204).send({ message: 'Successfully reset isCorrect for cards' });
+      res.status(204).send({ message: 'Successfully reset isCorrect for cards' });
+
+    }else {
+      res.status(400).json({ error: 'User parameter is required.' });
+    }
+  
   } catch (error) {
     console.error(error);
     res

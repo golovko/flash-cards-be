@@ -9,9 +9,9 @@ async function SeedMongo(dbm) {
     const collection = dbm.getCollection('cards');
     let res = await collection.drop();
     const result = await collection.insertMany(biologyCards);
-    console.log(result.insertedIds);
+    // console.log(result.insertedIds);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 }
 

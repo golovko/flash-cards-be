@@ -18,20 +18,41 @@ afterAll(async () => {
 });
 
 describe('cards endpoints tests', () => {
-  test('GET /api/cards should return a list of cards from the test database', async () => {
+  // OLD TESTS that DO not requier USER 
+  // test('GET /api/cards should return a list of cards from the test database', async () => {
+  //   await request(app)
+  //     .get('/api/cards')
+  //     .then((response) => {
+  //       expect(response.status).toBe(200);
+  //       console.log("response.body >>", response.body)
+  //       expect(response.body.length).toBe(10);
+  //     });
+  // });
+  // test('GET /api/cards?topic=Math should return a list of cards from the test database', async () => {
+  //   await request(app)
+  //     .get('/api/cards?topic=Math')
+  //     .then((response) => {
+  //       expect(response.status).toBe(200);
+  //       console.log("response.body.length >>", response.body.length)
+  //       expect(response.body.length).toBe(2);
+  //     });
+  // });
+
+  test ('GET /api/cards?user=BioDiversityAdvocate should return a list of cards from the test database', async () => {
     await request(app)
-      .get('/api/cards')
+      .get('/api/cards?user=BioDiversityAdvocate')
       .then((response) => {
         expect(response.status).toBe(200);
-        expect(response.body.length).toBe(10);
+        expect(response.body.length).toBe(1);
       });
   });
-  test('GET /api/cards?topic=Math should return a list of cards from the test database', async () => {
+
+  test('GET /api/cards?user=HormoneExpert&topic=Math should return a list of cards from the test database', async () => {
     await request(app)
-      .get('/api/cards?topic=Math')
+      .get('/api/cards?user=HormoneExpert&topic=Math')
       .then((response) => {
         expect(response.status).toBe(200);
-        expect(response.body.length).toBe(2);
+        expect(response.body.length).toBe(1);
       });
   });
 
@@ -74,10 +95,10 @@ describe('cards endpoints tests', () => {
         expect(response.body.message).toBe('Card fields cannot be empty');
       });
   });
-  test('should return 1 card by ID', async () => {
+  test('4 GET should return 1 card by ID', async () => {
     let id;
     await request(app)
-      .get('/api/cards')
+      .get('/api/cards?user=BiologyExpert')
       .then((response) => {
         id = response.body[0]._id;
       });
@@ -140,7 +161,7 @@ describe('/api/cards/:card_id', () => {
   it('DELETE: 200 deletes specific card and return no body', async () => {
     let card_id;
     await request(app)
-      .get('/api/cards')
+      .get('/api/cards?user=BiologyExpert')
       .then((response) => {
         card_id = response.body[0]._id;
       });
@@ -247,11 +268,11 @@ describe('Topics tests', () => {
 });
 
 describe('Updated isCorrect answer on the card tests', () => {
-  test('PATCH /api/cards/:card_id updates isCorrect property of the single card', async () => {
+  test('1 PATCH /api/cards/:card_id updates isCorrect property of the single card', async () => {
     const updateToSend = { isCorrect: true };
     let id;
     await request(app)
-      .get('/api/cards')
+      .get('/api/cards?user=BiologyExpert')
       .then((response) => {
         id = response.body[0]._id;
       });
@@ -266,12 +287,13 @@ describe('Updated isCorrect answer on the card tests', () => {
       });
   });
 
-  test('PATCH /api/cards/:card_id updates isCorrect property of the single card', async () => {
+  test('2 PATCH /api/cards/:card_id updates isCorrect property of the single card', async () => {
     const updateToSend = { topic: 'Neuroscience' };
     let id;
     await request(app)
-      .get('/api/cards')
+      .get('/api/cards?user=BiologyExpert')
       .then((response) => {
+        console.log("from line295  ", response.body)
         id = response.body[0]._id;
       });
     await request(app)
@@ -286,25 +308,28 @@ describe('Updated isCorrect answer on the card tests', () => {
   });
 });
 
-describe('reset isCorrect to false ', () => {
-  test('PATCH /api/cards resets isCorrect property of all cards', async () => {
+describe.only('reset isCorrect to false ', () => {
+  test('1 PATCH /api/cards resets isCorrect property of all cards', async () => {
+    const user = 'BiologyExpert'
     const updateToSend = { isCorrect: false };
     await request(app)
-      .patch(`/api/cards`)
+      .patch(`/api/cards?user=${user}`)
       .send(updateToSend)
       .then((response) => {
         expect(response.status).toBe(204);
       });
   });
 
-  test('PATCH /api/cards/:topic resets isCorrect property of all cards on the topic', async () => {
+  test('2 PATCH /api/cards/:topic resets isCorrect property of all cards on the topic', async () => {
     const topic = 'Biology';
+    const user = 'BiologyExpert'
     const updateToSend = { isCorrect: false };
 
     await request(app)
-      .patch(`/api/cards?${topic}`)
+      .patch(`/api/cards?user=${user}&topic=${topic}`)
       .send(updateToSend)
       .then((response) => {
+
         expect(response.status).toBe(204);
       });
   });

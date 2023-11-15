@@ -1,15 +1,35 @@
 const db = require('../db/newConnect');
 const { ObjectId } = require('mongodb');
 
-module.exports.fetchCards = async (topic) => {
-  let query = {};
-  if (topic) query = { topic: topic };
+// module.exports.fetchCards = async (user, topic) => {
+//   let query = {};
+//   if (topic) query = { topic: topic };
+//   //added
+//   // if (user) query.username = user.username;
+
+//   try {
+//     await db.connect();
+//     const collection = db.getCollection('cards');
+//     const fetchedCards = await collection.find(query).toArray();
+//     return fetchedCards;
+//   } catch (err) {
+//   } finally {
+//     db.close();
+//   }
+// };
+
+module.exports.fetchCardsByUser = async (user, topic) => {
+  let query = { author: user };
+  if (topic) {
+    query.topic = topic;
+  }
   try {
     await db.connect();
     const collection = db.getCollection('cards');
     const fetchedCards = await collection.find(query).toArray();
     return fetchedCards;
   } catch (err) {
+    
   } finally {
     db.close();
   }
@@ -96,8 +116,12 @@ module.exports.updateCardPatch = async (card_id, cardUpdate) => {
 };
 
 // reset all cards on ${topic} isCorrect => false
-module.exports.resetCardsIsCorrect = async (topic) => {
-  const query = topic ? { topic } : {};
+module.exports.resetCardsIsCorrect = async (user, topic) => {
+ 
+  let query = { author: user };
+  if (topic) {
+    query.topic = topic;
+  }
 
   try {
     await db.connect();
@@ -105,8 +129,7 @@ module.exports.resetCardsIsCorrect = async (topic) => {
     const updatedCards = await collection.updateMany(query, {
       $set: { isCorrect: false },
     });
-
-    if (updatedCards.matchedCount === 0) {
+      if (updatedCards.matchedCount === 0) {
       throw { status: 404, message: `No cards found` };
     }
     return { message: 'Successfully reset isCorrect for All cards' };
