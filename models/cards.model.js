@@ -46,7 +46,7 @@ module.exports.insertCard = async (newCard) => {
       answer,
       topic,
       author,
-      isCorrect: false,
+      isCorrect: -1,
     });
     const cardId = new ObjectId(insertedCard.insertedId);
     const postedCard = await collection.findOne({ _id: cardId });
@@ -127,7 +127,7 @@ module.exports.resetCardsIsCorrect = async (user, topic) => {
     await db.connect();
     const collection = db.getCollection('cards');
     const updatedCards = await collection.updateMany(query, {
-      $set: { isCorrect: false },
+      $set: { isCorrect: -1 },
     });
       if (updatedCards.matchedCount === 0) {
       throw { status: 404, message: `No cards found` };

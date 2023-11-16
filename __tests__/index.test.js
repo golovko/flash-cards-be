@@ -308,7 +308,7 @@ describe('Updated isCorrect answer on the card tests', () => {
   });
 });
 
-describe.only('reset isCorrect to false ', () => {
+describe('reset isCorrect to false ', () => {
   test('1 PATCH /api/cards resets isCorrect property of all cards', async () => {
     const user = 'BiologyExpert'
     const updateToSend = { isCorrect: false };
