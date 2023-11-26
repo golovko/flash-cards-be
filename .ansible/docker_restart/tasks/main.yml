@@ -19,3 +19,5 @@
       - "{{ PORT }}:{{ PORT }}"
     env:
       NODE_ENV: "{{ NODE_ENV }}"
+      MONGO_URI: "{{ MONGO_URI }}"
+      MONGO_DB: "{{ MONGO_DB }}"

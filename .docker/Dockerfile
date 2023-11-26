@@ -11,7 +11,7 @@ COPY models /aws/models
 COPY app.js /aws
 COPY listen.js /aws
 
-RUN npm install
+RUN npm install --omit=dev
 EXPOSE 3000/tcp
 
 CMD [ "npm", "run", "start" ]

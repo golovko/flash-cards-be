@@ -25,4 +25,6 @@ jobs:
             -e NODE_ENV=${{vars.NODE_ENV}} 
             -e PORT=${{vars.PORT}}   
             -e APP_PATH=${{vars.APP_PATH}}
+            -e MONGO_URI=${{vars.MONGO_URI}}
+            -e MONGO_DB=${{vars.MONGO_DB}}
            
