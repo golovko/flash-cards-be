@@ -23,6 +23,6 @@ jobs:
           options: 
             -e GITHUB_REPO=${{github.repository}}
             -e NODE_ENV=${{vars.NODE_ENV}} 
-            -e APP_PORT=${{vars.APP_PORT}}   
+            -e PORT=${{vars.PORT}}   
             -e APP_PATH=${{vars.APP_PATH}}
            

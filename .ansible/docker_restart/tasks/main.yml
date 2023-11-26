@@ -16,6 +16,6 @@
     ports: 
       # 3000:3000
       # in system (server) : in container (docker)
-      - "{{ APP_PORT }}:{{ APP_PORT}}"
+      - "{{ PORT }}:{{ PORT }}"
     env:
       NODE_ENV: "{{ NODE_ENV }}"
