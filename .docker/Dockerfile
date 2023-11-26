@@ -4,10 +4,10 @@ RUN mkdir -p /aws/app
 WORKDIR /aws
 
 COPY package.json /aws
-COPY controllers /aws
-COPY db /aws
-COPY errors /aws
-COPY models /aws
+COPY controllers /aws/controllers
+COPY db /aws/db
+COPY errors /aws/errors
+COPY models /aws/models
 COPY app.js /aws
 COPY listen.js /aws
 
